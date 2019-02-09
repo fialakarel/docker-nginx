@@ -1,0 +1,21 @@
+- name: Deploy NGINX proxy
+  docker_container:
+    name: nginx
+    hostname: nginx
+    image: fialakarel/nginx
+#    pull: yes
+    state: started
+    restart_policy: always
+#    log_options:
+#      max-size: 10m
+#    memory: 512m
+    published_ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - "gitlab:gitlab"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/machine_id:/etc/machine_id:ro"
+      - "/root/nginx/etc/nginx/sites:/etc/nginx/sites:ro"
+      - "/root/nginx/etc/nginx/certs:/etc/nginx/certs:rw"
