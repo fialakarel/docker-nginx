@@ -56,3 +56,10 @@ Lightweight Docker image for NGINX with ACME support
     
     # restart nginx container
     docker restart nginx
+
+#### How to automatically renew certificates
+
+See `generate-certs-sample` for more information and use the following CRON job example.
+
+    # Renew certificates
+    0 1 1 * * /bin/bash /root/bin/generate-certs

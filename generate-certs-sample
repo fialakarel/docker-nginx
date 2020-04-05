@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Domain name
+export certfile="example.cz"
+
+# Generate new certificates
+# Feel free to add more domains; eg. `--domain new.example.cz`
+docker exec nginx \
+	/root/.acme.sh/acme.sh \
+	--issue --keylength 3072 \
+	--domain ${certfile} \
+	--webroot /etc/nginx/certs/webroot/${certfile} \
+	--certpath /etc/nginx/certs/${certfile}.crt \
+	--keypath /etc/nginx/certs/${certfile}.key \
+	--capath /etc/nginx/certs/ca-${certfile}.crt \
+	--fullchainpath /etc/nginx/certs/${certfile}.pem \
+	--reloadcmd "nginx -s reload"
+
+result=$?
+
+if [ $result -eq 2 ];
+then
+	# We've got 
+	## Domains not changed.
+	## Skip, Next renewal time is: Mon Aug 19 09:16:38 UTC 2019
+	## Add '--force' to force to renew.
+
+	exit 0
+
+fi
+
+exit $result
